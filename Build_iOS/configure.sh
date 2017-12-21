@@ -3,10 +3,10 @@ set -e
 
 if [ ! -e boost.framework ]
    then
-       git clone -n https://github.com/faithfracture/Apple-Boost-BuildScript Apple-Boost-BuildScript
+       [ -d Apple-Boost-BuildScript ] || git clone -n https://github.com/faithfracture/Apple-Boost-BuildScript Apple-Boost-BuildScript
        pushd Apple-Boost-BuildScript
        git checkout 86f7570fceaef00846cc75f59c61474758fc65cb
-       BOOST_LIBS="thread chrono filesystem regex system random" ./boost.sh
+       BOOST_LIBS="thread chrono filesystem regex system random" ./boost.sh -ios
        popd
        mv Apple-Boost-BuildScript/build/boost/1.63.0/ios/framework/boost.framework .
        mv boost.framework/Versions/A/Headers boost.headers
@@ -21,7 +21,7 @@ if [ ! -e openssl/lib/libcrypto.a ]
        ./build-libssl.sh
        popd
        mkdir -p openssl/lib
-       cp -r OpenSSL-for-iPhone/bin/iPhoneOS9.2-armv7.sdk/include openssl
+       cp -r OpenSSL-for-iPhone/bin/iPhoneOS11.2-armv7.sdk/include openssl
        cp OpenSSL-for-iPhone/include/LICENSE openssl
        lipo -create -output openssl/lib/libssl.a OpenSSL-for-iPhone/bin/iPhone*/lib/libssl.a
        lipo -create -output openssl/lib/libcrypto.a OpenSSL-for-iPhone/bin/iPhone*/lib/libcrypto.a
